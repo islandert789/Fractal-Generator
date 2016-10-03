@@ -71,6 +71,21 @@ class Fractal:
         else:
             turtle.setworldcoordinates(self.bounds[0],ay-0.5*dx*R,self.bounds[2],ay+0.5*dx*R)
         turtle.hideturtle()
+    def draw(self):
+        turtle.left(self.angle)
+        turtle.fd(1)
+        if self.mirrored:
+            l = len(self.pattern)-1)//2+1
+        else:
+            l = len(self.pattern)+1
+        for i in range(1,turns(l-1,n)+1):
+            while not i%l:
+                i//=l
+            if mir:
+                turtle.left(self.pattern[i%(2*l)-1])
+            else:
+                turtle.left(self.pattern[i%l-1])
+            turtle.fd(1)
 
 F = Fractal([90],10,True, 15)
 print(F.getBounds())
