@@ -23,13 +23,14 @@ class Fractal:
         self.iterations = iterations
         self.mirrored = mirrored
         self.angle = angle
+        self.bounds = self.getBounds()
     def turns(self):
         baseTurns = len(self.pattern)
         turnN = baseTurns
         for j in range(1,self.iterations+1):
             turnN = baseTurns + turnN*baseTurns + turnN
         return turnN
-    def bounds(self):
+    def getBounds(self):
         x=0.0
         y=0.0
         # the initial direction
@@ -57,6 +58,19 @@ class Fractal:
             bounds[2]=max(bounds[2],x)
             bounds[3]=max(bounds[3],y)
         return [bounds[0]-1,bounds[1]-1,bounds[2]+1,bounds[3]+1]
+    def setupScreen(self):
+        print(self.bounds)
+        turtle.setup(width=1670,height=1000, startx = 0, starty=0)
+        R = float(turtle.window_height())/turtle.window_width()
+        dy=self.bounds[3]-self.bounds[1]
+        dx=self.bounds[2]-self.bounds[0]
+        ax=0.5*(self.bounds[0]+self.bounds[2])
+        ay=0.5*(self.bounds[1]+self.bounds[3])
+        if dy/dx>=R:
+            turtle.setworldcoordinates(ax-0.5*dy/R,self.bounds[1],ax+0.5*dy/R,self.bounds[3])
+        else:
+            turtle.setworldcoordinates(self.bounds[0],ay-0.5*dx*R,self.bounds[2],ay+0.5*dx*R)
+        turtle.hideturtle()
 
 F = Fractal([90],10,True, 15)
-print(F.bounds())
+print(F.getBounds())
