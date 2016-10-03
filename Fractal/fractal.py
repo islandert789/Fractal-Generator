@@ -3,6 +3,22 @@ import math
 
 class Fractal:
     def __init__(self, pattern, iterations, mirrored, angle):
+        """
+        Initialize a Fractal object.
+
+        Arguments:
+            pattern -- an array of angles that form the base of the fractal
+
+            iterations -- number of iterations of the fractal
+
+            mirrored -- boolean if the pattern is mirrored
+
+            angle -- initial angle, leave blank to find optimal angle
+
+        Example:
+            myFractal = Fractal([90], 15, True)
+                define a fractal with base [90] for 15 iterations using mirroring
+        """
         self.pattern = pattern
         self.iterations = iterations
         self.mirrored = mirrored
@@ -19,7 +35,7 @@ class Fractal:
         # the initial direction
         direction = self.angle
         # the bounding coordinates
-        b=[0,0,0,0]
+        bounds=[0,0,0,0]
         # length of the base pattern
         l=len(self.pattern)+1
         tempPattern = self.pattern.copy()
@@ -36,11 +52,11 @@ class Fractal:
                 direction+=tempPattern[i%l-1]
             x+=math.cos(math.radians(direction))
             y+=math.sin(math.radians(direction))
-            b[0]=min(b[0],x)
-            b[1]=min(b[1],y)
-            b[2]=max(b[2],x)
-            b[3]=max(b[3],y)
-        return [b[0]-1,b[1]-1,b[2]+1,b[3]+1]
+            bounds[0]=min(bounds[0],x)
+            bounds[1]=min(bounds[1],y)
+            bounds[2]=max(bounds[2],x)
+            bounds[3]=max(bounds[3],y)
+        return [bounds[0]-1,bounds[1]-1,bounds[2]+1,bounds[3]+1]
 
 F = Fractal([90],10,True, 15)
 print(F.bounds())
