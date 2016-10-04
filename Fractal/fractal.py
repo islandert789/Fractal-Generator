@@ -22,6 +22,10 @@ class Fractal:
         self.pattern = pattern
         self.iterations = iterations
         self.mirrored = mirrored
+        if mirrored:
+            self.pattern += [None]
+            for i in range(len(self.pattern)-2, -1, -1):
+                self.pattern += [-self.pattern[i]]
         self.angle = angle
         self.bounds = self.getBounds()
     def turns(self):
@@ -38,7 +42,7 @@ class Fractal:
         # the bounding coordinates
         bounds=[0,0,0,0]
         # length of the base pattern
-        l=len(self.pattern)+1
+        l=len(self.pattern)//2+1
         tempPattern = self.pattern.copy()
         if self.mirrored:
             tempPattern+=[None]
@@ -72,20 +76,29 @@ class Fractal:
             turtle.setworldcoordinates(self.bounds[0],ay-0.5*dx*R,self.bounds[2],ay+0.5*dx*R)
         turtle.hideturtle()
     def draw(self):
+        turtle.tracer(0)
+
         turtle.left(self.angle)
         turtle.fd(1)
         if self.mirrored:
-            l = len(self.pattern)-1)//2+1
+            l = (len(self.pattern)-1)//2+1
+            print(len(self.pattern))
         else:
             l = len(self.pattern)+1
-        for i in range(1,turns(l-1,n)+1):
+        for i in range(1,self.turns()+1):
             while not i%l:
                 i//=l
-            if mir:
+            if self.mirrored:
                 turtle.left(self.pattern[i%(2*l)-1])
             else:
                 turtle.left(self.pattern[i%l-1])
             turtle.fd(1)
+        turtle.tracer(1)
+        turtle.exitonclick()
+    def disp(self):
+        self.setupScreen()
+        self.draw()
 
-F = Fractal([90],10,True, 15)
-print(F.getBounds())
+
+F = Fractal([90],5,True, 15)
+print(F.disp())
