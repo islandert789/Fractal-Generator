@@ -64,7 +64,10 @@ class Fractal:
         return [bounds[0]-1,bounds[1]-1,bounds[2]+1,bounds[3]+1]
     def setupScreen(self):
         print(self.bounds)
-        turtle.setup(width=1670,height=1000, startx = 0, starty=0)
+        try:
+            turtle.setup(width=1670,height=1000, startx = 0, starty=0)
+        except turtle.Terminator:
+            turtle.setup(width=1670,height=1000, startx = 0, starty=0)
         R = float(turtle.window_height())/turtle.window_width()
         dy=self.bounds[3]-self.bounds[1]
         dx=self.bounds[2]-self.bounds[0]
@@ -77,12 +80,10 @@ class Fractal:
         turtle.hideturtle()
     def draw(self):
         turtle.tracer(0)
-
         turtle.left(self.angle)
         turtle.fd(1)
         if self.mirrored:
             l = (len(self.pattern)-1)//2+1
-            print(len(self.pattern))
         else:
             l = len(self.pattern)+1
         for i in range(1,self.turns()+1):
@@ -98,7 +99,11 @@ class Fractal:
     def disp(self):
         self.setupScreen()
         self.draw()
-
+    def __str__(self):
+        rtn = "Base Pattern: " + str(self.pattern)
+        rtn+= "\nIterations: " + str(self.iterations)
+        rtn+= "\nMirrored?: " + str(self.mirrored)
+        rtn+= "\nInitial Angle: " + str(self.angle)
+        return rtn
 
 F = Fractal([90],5,True, 15)
-print(F.disp())
